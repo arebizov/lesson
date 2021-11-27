@@ -1,5 +1,11 @@
-import java.sql.SQLException;
+package com.company;
 
+import org.h2.jdbcx.JdbcConnectionPool;
+import org.h2.tools.DeleteDbFiles;
+
+import java.sql.*;
+
+// H2 Database ConnectionPool Example
 public class H2DatabaseConnectionPoolExample {
 
     private static final String DB_DRIVER = "org.h2.Driver";
