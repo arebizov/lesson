@@ -1,6 +1,7 @@
 package com.company;
 
 import org.h2.jdbcx.JdbcConnectionPool;
+
 import org.h2.tools.DeleteDbFiles;
 
 import java.sql.*;
@@ -10,8 +11,8 @@ public class H2DatabaseConnectionPoolExample {
 
     private static final String DB_DRIVER = "org.h2.Driver";
     private static final String DB_CONNECTION = "jdbc:h2:~/test";
-    private static final String DB_USER = "";
-    private static final String DB_PASSWORD = "";
+    private static final String DB_USER = "sa";
+    private static final String DB_PASSWORD = "12345";
 
     public static void main(String[] args) throws Exception {
         try {
@@ -65,7 +66,7 @@ public class H2DatabaseConnectionPoolExample {
             connection.setAutoCommit(false);
             stmt = connection.createStatement();
             stmt.execute("CREATE TABLE PERSON(id int primary key, name varchar(255))");
-            stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(1, 'A')");
+            stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(1, 'A1')");
             stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(2, 'B')");
             stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(3, 'C')");
 
