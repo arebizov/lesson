@@ -1,46 +1,55 @@
 package com.company;
-
 import org.h2.jdbcx.JdbcConnectionPool;
-
 import org.h2.tools.DeleteDbFiles;
 
+
 import java.sql.*;
+import java.util.Scanner;
+
+import static com.company.ConnectionsDB.getConnectionPool;
+
 
 // H2 Database ConnectionPool Example
-public class H2DatabaseConnectionPoolExample {
+public class H2DatabaseConnectionPoolExample{
 
-    private static final String DB_DRIVER = "org.h2.Driver";
-    private static final String DB_CONNECTION = "jdbc:h2:~/test";
-    private static final String DB_USER = "sa";
-    private static final String DB_PASSWORD = "12345";
+ public static void main(String[] args) throws Exception {
 
-    public static void main(String[] args) throws Exception {
         try {
             // delete the database named 'test' in the user home directory for initialization
             DeleteDbFiles.execute("~", "test", true);
-            batchInsertWithStatement();
-            batchInsertWithPreparedStatement();
+           batchInsertWithStatement();
+           batchInsertWithPreparedStatement();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    private static void batchInsertWithPreparedStatement() throws SQLException {
+      public static void batchInsertWithPreparedStatement() throws SQLException {
         JdbcConnectionPool jdbcConnectionPool = getConnectionPool();
         Connection connection = jdbcConnectionPool.getConnection();
         PreparedStatement preparedStatement = null;
+class Person {
+    private  String  as = "sdfsdf";
+    public Person(String as){
+        this.as=as;
+    }
+
+
+}
 
         String Query = "INSERT INTO PERSON" + "(id, name) values" + "(?,?)";
         try {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(Query);
+            Scanner scanner = new Scanner(System.in);
+            String s =scanner.nextLine();
 
-            preparedStatement.setInt(1, 4);
-            preparedStatement.setString(2, "Rockey");
+
+            preparedStatement.setInt(1,3);
+            preparedStatement.setString(2, s);
             preparedStatement.addBatch();
 
-            preparedStatement.setInt(1, 5);
+            preparedStatement.setInt(1, 4);
             preparedStatement.setString(2, "Jacky");
             preparedStatement.addBatch();
 
@@ -66,9 +75,11 @@ public class H2DatabaseConnectionPoolExample {
             connection.setAutoCommit(false);
             stmt = connection.createStatement();
             stmt.execute("CREATE TABLE PERSON(id int primary key, name varchar(255))");
-            stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(1, 'A1')");
-            stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(2, 'B')");
-            stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(3, 'C')");
+            //list.add(new Equations(str.toString(), input, timeStart.toString(), timeEnd.toString(), x));
+            stmt.execute("CREATE TABLE Equations1 ( name varchar(255), input int, datestart varchar(255) ,dateend varchar(255), x int)");
+            //stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(1, 'A1')");
+            //stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(2, 'B')");
+            //stmt.addBatch("INSERT INTO PERSON(id, name) VALUES(3, 'C')");
 
             int[] countWithoutException = stmt.executeBatch();
             System.out.println("OK: countWithoutException = " + countWithoutException.length);
@@ -85,15 +96,5 @@ public class H2DatabaseConnectionPoolExample {
         }
     }
 
-    // Create H2 JdbcConnectionPool
-    private static JdbcConnectionPool getConnectionPool() {
-        JdbcConnectionPool cp = null;
-        try {
-            Class.forName(DB_DRIVER);
-        } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-        cp = JdbcConnectionPool.create(DB_CONNECTION, DB_USER, DB_PASSWORD);
-        return cp;
-    }
+
 }

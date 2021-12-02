@@ -9,26 +9,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
-    public static class Equations {
 
-        String name;
-        int answer;
-        String timeS;
-        String timeE;
-        int x;
+    public static void main (String[] args) {
 
-        public Equations(String name, int answer, String timeS, String timeE, int x) {
-            this.name = name;
-            this.answer = answer;
-            this.timeS = timeS;
-            this.timeE = timeE;
-            this.x = x;
-        }
-    }
 
-    public static void main(String[] args) {
-
-        List<Equations> list = new ArrayList<>();
 
         String expressionString1 = "";
         String expressionString2 = "";
@@ -37,6 +21,9 @@ public class Main {
         StringBuilder str = new StringBuilder();
         System.out.println("Добрый день, введите своё имя:");
         String name = scanner.nextLine();
+        List<Equations> list = new ArrayList<>();
+        H2DatabaseConnectionPoolExample h2DatabaseConnectionPoolExample = new H2DatabaseConnectionPoolExample();
+        //String s = h2DatabaseConnectionPoolExample("hkjhk");
 
 
         int t = 0;
@@ -48,8 +35,9 @@ public class Main {
             int b = ThreadLocalRandom.current().nextInt(1, 25);
             int c;
 
+
             int expression = ThreadLocalRandom.current().nextInt(0, 5);
-            LocalDateTime timeS = LocalDateTime.now();
+            LocalDateTime timeStart = LocalDateTime.now();
             switch (expression) {
                 case 0:
                     //сконструировать expression
@@ -99,15 +87,17 @@ public class Main {
             //System.out.println(x);
 
             System.out.println("Введите ответ:");
-            int xx = scanner.nextInt();
-            LocalDateTime timeE = LocalDateTime.now();
-            list.add(new Equations(str.toString(), xx, timeS.toString(), timeE.toString(), x));
-            if (xx == x) {
+            int input = scanner.nextInt();
+            LocalDateTime timeEnd = LocalDateTime.now();
+            list.add(new Equations(str.toString(), input, timeStart.toString(), timeEnd.toString(), x));
+            String Query = "INSERT INTO PERSON" + "(id, name) values" + "(?,?)";
+
+            if (input== x) {
                 System.out.println("True");
                 System.out.println("введите q - если хотите выйти, введите 1 - если хотите пример");
                 t += 1;
             }
-            if (xx != x)
+            if (input != x)
                 System.out.println("введите q - если хотите выйти, введите 1 - если хотите пример, 2- если хотите ввести еще один ответ");
 
             String ab = scanner1.nextLine();
@@ -121,14 +111,16 @@ public class Main {
                     continue;
                 case "2":
                     System.out.println("Введите ответ еще раз");
+
                     int xxx = scanner.nextInt();
                     break;
             }
 
+
         }
         for (int i = 0; i < list.size(); i++) {
             Equations equations = list.get(i);
-            System.out.println(equations.name + " Ответ: " + equations.answer + " Правильный ответ " + equations.x + " " + equations.timeS + " " + equations.timeE);
+            System.out.println(equations.name + " Ответ: " + equations.answer + " Правильный ответ " + equations.x + " " + equations.timeStart + " " + equations.timeEnd);
         }
         System.out.println("Правильных ответов:" + t);
     }
