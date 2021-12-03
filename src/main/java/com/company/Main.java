@@ -1,24 +1,23 @@
 package com.company;
+
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
 
-    public static void main (String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
         Scanner scanner1 = new Scanner(System.in);
         StringBuilder equationName = new StringBuilder();
-        ExecuteDB executeDB = new ExecuteDB();
-        executeDB.dropTable();
-        executeDB.createTable();
+        DbHandler dbHandler = new DbHandler();
+        dbHandler.initialize();
+        dbHandler.dropTable();
+        dbHandler.createTable();
         System.out.println("Добрый день, введите своё имя:");
-        List<Equations> list = new ArrayList<>();
         String name = scanner.nextLine();
         int t = 0;
         String s = "";
@@ -80,18 +79,16 @@ public class Main {
             System.out.println("Введите ответ:");
             int input = scanner.nextInt();
             LocalDateTime timeEnd = LocalDateTime.now();
-            executeDB.insertDB(equationName.toString(), input, timeStart.toString(), timeEnd.toString(), x);
-            //list.add(new Equations(equationName.toString(), input, timeStart.toString(), timeEnd.toString(), x));
+            dbHandler.insertDB(equationName.toString(), input, timeStart.toString(), timeEnd.toString(), x);
 
-            if (input== x) {
+            if (input == x) {
                 System.out.println("True");
                 System.out.println("введите q - если хотите выйти, введите 1 - если хотите пример");
                 t += 1;
             }
             if (input != x)
                 System.out.println("False");
-                System.out.println("введите q - если хотите выйти, введите 1 - если хотите пример");
-
+            System.out.println("введите q - если хотите выйти, введите 1 - если хотите пример");
             String ab = scanner1.nextLine();
             equationName = new StringBuilder("");
             switch (ab) {
@@ -104,13 +101,8 @@ public class Main {
                 default:
             }
 
-
         }
         System.out.println("Статистика ответов ученика " + name);
-        for (int i = 0; i < list.size(); i++) {
-            Equations equations = list.get(i);
-            System.out.println(equations.equation + " Ответ: " + equations.answer + " Правильный ответ " + equations.x + " " + equations.timeStart + " " + equations.timeEnd);
-        }
         System.out.println("Правильных ответов:" + t);
     }
 }
