@@ -1,10 +1,12 @@
 package com.company;
 
+//import org.h2.jdbcx.JdbcConnectionPool;
+
 import org.h2.jdbcx.JdbcConnectionPool;
 
 import java.sql.*;
 
-import static com.company.ConnectionsDB.getConnectionPool;
+import static com.company.ConnectionsDbH2.getConnectionPool;
 
 public class DbHandler {
     public void initialize() throws SQLException {
